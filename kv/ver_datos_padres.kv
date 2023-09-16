@@ -1,0 +1,28 @@
+<Ver_datos_padresScreen>:
+    ScrollView:
+        canvas.before:
+            Color:
+                rgb: 0.8, 0.2, 0.4
+            Rectangle:
+                pos: self.pos
+                size: self.size
+        do_scroll_x: False
+        GridLayout:
+            cols: 1
+            size_hint_y: None
+            height: self.minimum_height
+            padding: 10
+            canvas.before:
+                Color:
+                    rgb: 0.8, 0.2, 0.4
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+            BoxLayout:
+                size_hint_y: None
+                height: 30
+            Button:
+                text: 'Go to Screen Visualizar_datos'
+                size_hint_y: None
+                height: 45
+                on_press: root.go_to_visualizar_datos()
