@@ -25,7 +25,7 @@ jobs:
           sudo apt-get install -qq python3-pip build-essential git python3 python3-dev ffmpeg \
                                    libsdl2-dev libsdl2-image-dev libsdl2-mixer-dev libsdl2-ttf-dev \
                                    libportmidi-dev libswscale-dev libavformat-dev libavcodec-dev zlib1g-dev
-          pip install Cython==0.29.19
+          pip install Cython==0.29.36
           pip install kivy
 
       - name: Install Buildozer
@@ -36,18 +36,17 @@ jobs:
         run: |
           buildozer init
 
-      - name: Setup Android SDK and accept licenses
+      - name: Accept Android SDK license
         run: |
-          sudo apt-get install -y unzip openjdk-8-jdk
-          wget https://dl.google.com/android/repository/sdk-tools-linux-4333796.zip
-          unzip sdk-tools-linux-4333796.zip -d android-sdk
-          export ANDROID_HOME=$PWD/android-sdk
-          export PATH=$PATH:$ANDROID_HOME/tools/bin
-          yes | sdkmanager --licenses
+          echo "android.accept_sdk_license = True" >> buildozer.spec
+
+      - name: Setup Java 8
+        run: |
+          sudo apt-get install -y openjdk-8-jdk
+          sudo update-alternatives --set java /usr/lib/jvm/java-8-openjdk-amd64/jre/bin/java
 
       - name: Build APK
         run: |
-          export ANDROID_HOME=$PWD/android-sdk
           buildozer android debug
 
       - name: Upload APK
