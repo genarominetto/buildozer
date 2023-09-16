@@ -21,12 +21,12 @@ jobs:
 
       - name: Install dependencies
         run: |
-          sudo apt-get update -qq
-          sudo apt-get install -qq python3-pip build-essential git python3 python3-dev ffmpeg \
-                                   libsdl2-dev libsdl2-image-dev libsdl2-mixer-dev libsdl2-ttf-dev \
-                                   libportmidi-dev libswscale-dev libavformat-dev libavcodec-dev zlib1g-dev
-          pip install Cython==0.29.36
-          pip install kivy
+          sudo apt-get update
+          sudo apt-get install -y build-essential zlib1g-dev libncurses5-dev libgdbm-dev libnss3-dev libssl-dev libreadline-dev libffi-dev wget libbz2-dev openjdk-8-jdk
+
+      - name: Setup Java 8
+        run: |
+          sudo update-alternatives --set java /usr/lib/jvm/java-8-openjdk-amd64/jre/bin/java
 
       - name: Install Buildozer
         run: |
@@ -35,19 +35,11 @@ jobs:
       - name: Initialize Buildozer
         run: |
           buildozer init
-
-      - name: Accept Android SDK license
-        run: |
           echo "android.accept_sdk_license = True" >> buildozer.spec
-
-      - name: Setup Java 8
-        run: |
-          sudo apt-get install -y openjdk-8-jdk
-          sudo update-alternatives --set java /usr/lib/jvm/java-8-openjdk-amd64/jre/bin/java
 
       - name: Build APK
         run: |
-          buildozer android debug
+          yes | buildozer android debug
 
       - name: Upload APK
         uses: actions/upload-artifact@v2
