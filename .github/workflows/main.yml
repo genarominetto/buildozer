@@ -5,6 +5,7 @@ on:
     paths:
       - 'main.py'
       - '.github/workflows/build-android.yml'
+      - 'buildozer.spec'
 
 jobs:
   build:
@@ -33,19 +34,12 @@ jobs:
           pip install buildozer
           pip install Cython==0.29.36
 
-      - name: Initialize Buildozer
-        run: |
-          buildozer init
-          echo "android.accept_sdk_license = True" >> buildozer.spec
-
       - name: Build APK
         run: |
           yes | buildozer android debug
 
-      - name: Upload APK and buildozer.spec
+      - name: Upload APK
         uses: actions/upload-artifact@v2
         with:
-          name: kivy_app_and_spec
-          path: |
-            bin/*.apk
-            buildozer.spec
+          name: kivy_app
+          path: bin/*.apk
